@@ -23,6 +23,8 @@ router.get('/webhook', function(req, res, next) {
 });
 
 router.post('/webhook', function(req, res, next) {
+    console.log("ciao");
+    console.log(JSON.stringify(req.body));
     var messaging_events = req.body.entry[0].messaging,
         replayMessages = [];
     for (i = 0; i < messaging_events.length; i++) {
