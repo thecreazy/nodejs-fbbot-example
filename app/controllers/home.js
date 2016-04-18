@@ -2,8 +2,7 @@ var express = require('express'),
     router = express.Router(),
     request = require('request'),
     Article = require('../models/article'),
-    token = "CAAYs2ZCX4bPsBAIFzomk6DvZBnczQxTr9IRn5kotcZCJqzBlbFeNxet0O2ZB1HookjngJ0h4Rs1F0ZC3ldt1916oZCi2S1qmk75JCela5W676wk3HxzAOKoO3upU40Sp6YGSOx8SmhRCfP7tbZC17A6zr1ZAvHFI0Co9JZAZBTUNOmDDme1g3sFNssnoWZBXy2UUNMNmjYl39HWAQZDZD";
-
+    token = "CAAYs2ZCX4bPsBAFCJAgdB2eIq6yhwD9WESkghIpE10GQ2LG7ostZALF5LUIIKfo6DOIePIbiO3HBRJkFv4wO9wJBNy3sQZBr8ZCv8LGkcngdGsRMr5uCWu9KZCsM6OJ5xlcrWHiZCXOJC4Wq6gZA4m0jtvoyS0nOgxYyz5nK2dGn8E0I5hy87HUHRt8kL2DJ3QZD";
 module.exports = function(app) {
     app.use('/', router);
 };
@@ -17,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/webhook', function(req, res, next) {
-    if (req.query['hub.verify_token'] === token) {
+    if (req.query['hub.verify_token'] === "CAAYs2ZCX4bPsBAIFzomk6DvZBnczQxTr9IRn5kotcZCJqzBlbFeNxet0O2ZB1HookjngJ0h4Rs1F0ZC3ldt1916oZCi2S1qmk75JCela5W676wk3HxzAOKoO3upU40Sp6YGSOx8SmhRCfP7tbZC17A6zr1ZAvHFI0Co9JZAZBTUNOmDDme1g3sFNssnoWZBXy2UUNMNmjYl39HWAQZDZD") {
         res.send(req.query['hub.challenge']);
     }
     res.send('Error, wrong validation token');
@@ -41,7 +40,7 @@ router.post('/webhook', function(req, res, next) {
 function sendTextMessage(sender, text) {
     var messageData = {
         text: text
-    };
+    }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: token },
