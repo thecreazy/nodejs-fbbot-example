@@ -30,13 +30,13 @@ router.post('/webhook', function(req, res, next) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             text = event.message.text;
-            findTextType(sender, text);
+            findRespType(sender, text);
         }
     }
     res.sendStatus(200);
 });
 
-function sendTextMessage(sender, text) {
+function findRespType(sender, text) {
     _textMessage = "";
     if (text.toLoverCase().indexOf("ciao") > -1) {
         _textMessage = "Ciao a te caro";
