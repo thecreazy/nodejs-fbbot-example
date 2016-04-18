@@ -57,15 +57,15 @@ function findRespType(sender, text) {
                         "buttons": [{
                             "type": "postback",
                             "title": "Massima temperatura" + _body[i].temperatureMax,
-                            "payload": ""
+                            "payload": "Can not be empty"
                         }, {
                             "type": "postback",
                             "title": "Minima temperatura" + _body[i].apparentTemperatureMin,
-                            "payload": "",
+                            "payload": "Can not be empty",
                         }, {
                             "type": "postback",
                             "title": "Umidità" + _body[i].humidity,
-                            "payload": "Payload for first element in a generic bubble",
+                            "payload": "Can not be empty",
                         }]
                     });
                 }
