@@ -30,6 +30,7 @@ router.post('/webhook', function(req, res, next) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             text = event.message.text;
+            console.log("here");
             findRespType(sender, text);
         }
     }
@@ -38,15 +39,17 @@ router.post('/webhook', function(req, res, next) {
 
 function findRespType(sender, text) {
     _textMessage = "";
+    console.log("here2");
     if (text.toLoverCase().indexOf("ciao") > -1) {
         _textMessage = "Ciao a te caro";
     } else {
-        _textMessage = "Scusa non ho capito;"
+        _textMessage = "Scusa non ho capito;";
     }
     sendTextMessage(sender, _textMessage);
 }
 
 function sendTextMessage(sender, text) {
+    console.log("here3");
     var messageData = {
         text: text
     }
