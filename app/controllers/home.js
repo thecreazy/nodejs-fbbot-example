@@ -43,40 +43,48 @@ function findRespType(sender, text) {
         _messageData = {
             text: "Ciao a te caro, dimmi la città di cui vuoi saper il tempo:"
         };
+        sendTextMessage(sender, _messageData);
     } else {
-        _messageData = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "First card",
-                        "subtitle": "Element #1 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+        var weatherSourceUrl = "https://api.forecast.io/forecast/8e154310f7fbb2b321f7907b80fa9e83/41.931907,12.456304?lang=it&units=si";
+        request(weatherSourceUrl, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var _body = JSON.parse(body).daily.data;
+                var _elements = [];
+                for (var i in _body) {
+                    _elements.push({
+                        "title": _body[i].summary,
+                        "subtitle": _body[i].icon,
                         "buttons": [{
-                            "type": "web_url",
-                            "url": "https://www.messenger.com/",
-                            "title": "Web url"
+                            "type": "postback",
+                            "title": "Massima temperatura" + _body[i].temperatureMax,
+                            "payload": ""
                         }, {
                             "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for first element in a generic bubble",
-                        }],
-                    }, {
-                        "title": "Second card",
-                        "subtitle": "Element #2 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                        "buttons": [{
+                            "title": "Minima temperatura" + _body[i].apparentTemperatureMin,
+                            "payload": "",
+                        }, {
                             "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for second element in a generic bubble",
-                        }],
-                    }]
+                            "title": "Umidità" + _body[i].humidity,
+                            "payload": "Payload for first element in a generic bubble",
+                        }]
+                    });
                 }
+                _messageData = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": _elements
+                        }
+                    }
+                };
+                sendTextMessage(sender, _messageData);
+            } else {
+                new Error("Error " + response.statusCode);
             }
-        };
+        });
     }
-    sendTextMessage(sender, _messageData);
+
 }
 
 function sendTextMessage(sender, messageData) {
