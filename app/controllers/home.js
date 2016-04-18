@@ -38,27 +38,48 @@ router.post('/webhook', function(req, res, next) {
 });
 
 function findRespType(sender, text) {
-    var _textMessage = "";
-    console.log("here2");
-    console.log(text);
-    console.log("here3");
+    var _textMessage;
     if (text.toLowerCase().indexOf("ciao") > -1) {
-        _textMessage = "Ciao a te caro";
+        _messageData = {
+            text: "Ciao a te caro, dimmi la città di cui vuoi saper il tempo:"
+        };
     } else {
-        _textMessage = "Scusa non ho capito;";
+        _messageData = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": "First card",
+                        "subtitle": "Element #1 of an hscroll",
+                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                        "buttons": [{
+                            "type": "web_url",
+                            "url": "https://www.messenger.com/",
+                            "title": "Web url"
+                        }, {
+                            "type": "postback",
+                            "title": "Postback",
+                            "payload": "Payload for first element in a generic bubble",
+                        }],
+                    }, {
+                        "title": "Second card",
+                        "subtitle": "Element #2 of an hscroll",
+                        "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                        "buttons": [{
+                            "type": "postback",
+                            "title": "Postback",
+                            "payload": "Payload for second element in a generic bubble",
+                        }],
+                    }]
+                }
+            }
+        };
     }
-    console.log(_textMessage);
-
-    sendTextMessage(sender, _textMessage);
+    sendTextMessage(sender, _messageData);
 }
 
-function sendTextMessage(sender, text) {
-    console.log("here4");
-    console.log(sender);
-    console.log(text);
-    var messageData = {
-        text: text
-    }
+function sendTextMessage(sender, messageData) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: token },
