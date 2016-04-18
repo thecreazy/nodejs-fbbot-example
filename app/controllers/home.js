@@ -38,7 +38,7 @@ router.post('/webhook', function(req, res, next) {
 });
 
 function findRespType(sender, text) {
-    _textMessage = "";
+    var _textMessage = "";
     console.log("here2");
     if (text.toLoverCase().indexOf("ciao") > -1) {
         _textMessage = "Ciao a te caro";
