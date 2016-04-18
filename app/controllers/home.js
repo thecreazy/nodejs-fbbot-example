@@ -23,8 +23,6 @@ router.get('/webhook', function(req, res, next) {
 });
 
 router.post('/webhook', function(req, res, next) {
-    console.log("ciao");
-    console.log(JSON.stringify(req.body));
     var messaging_events = req.body.entry[0].messaging,
         replayMessages = [];
     for (i = 0; i < messaging_events.length; i++) {
@@ -32,12 +30,21 @@ router.post('/webhook', function(req, res, next) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             text = event.message.text;
-            sendTextMessage(sender, text.substring(0, 200));
+            findTextType(sender, text);
         }
     }
     res.sendStatus(200);
 });
 
+function sendTextMessage(sender, text) {
+    _textMessage = "";
+    if (text.toLoverCase().indexOf("ciao") > -1) {
+        _textMessage = "Ciao a te caro";
+    } else {
+        _textMessage = "Scusa non ho capito;"
+    }
+    sendTextMessage(sender, _textMessage);
+}
 
 function sendTextMessage(sender, text) {
     var messageData = {
