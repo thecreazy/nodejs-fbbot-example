@@ -45,11 +45,16 @@ function findRespType(sender, text) {
     } else {
         _textMessage = "Scusa non ho capito;";
     }
+    console.log(_textMessage);
+    console.log(text);
+    console.log("here3");
     sendTextMessage(sender, _textMessage);
 }
 
 function sendTextMessage(sender, text) {
-    console.log("here3");
+    console.log("here4");
+    console.log(sender);
+    console.log(text);
     var messageData = {
         text: text
     }
