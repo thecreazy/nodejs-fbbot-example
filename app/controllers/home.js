@@ -40,14 +40,15 @@ router.post('/webhook', function(req, res, next) {
 function findRespType(sender, text) {
     var _textMessage = "";
     console.log("here2");
-    if (text.toLoverCase().indexOf("ciao") > -1) {
+    console.log(text);
+    console.log("here3");
+    if (text.toLowerCase().indexOf("ciao") > -1) {
         _textMessage = "Ciao a te caro";
     } else {
         _textMessage = "Scusa non ho capito;";
     }
     console.log(_textMessage);
-    console.log(text);
-    console.log("here3");
+
     sendTextMessage(sender, _textMessage);
 }
 
