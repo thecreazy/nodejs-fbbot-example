@@ -2,7 +2,7 @@ var express = require('express'),
     router = express.Router(),
     request = require('request'),
     Article = require('../models/article'),
-    token = "CAAYs2ZCX4bPsBAFCJAgdB2eIq6yhwD9WESkghIpE10GQ2LG7ostZALF5LUIIKfo6DOIePIbiO3HBRJkFv4wO9wJBNy3sQZBr8ZCv8LGkcngdGsRMr5uCWu9KZCsM6OJ5xlcrWHiZCXOJC4Wq6gZA4m0jtvoyS0nOgxYyz5nK2dGn8E0I5hy87HUHRt8kL2DJ3QZD";
+    token = "<access_page_token_>";
 module.exports = function(app) {
     app.use('/', router);
 };
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/webhook', function(req, res, next) {
-    if (req.query['hub.verify_token'] === "CAAYs2ZCX4bPsBAIFzomk6DvZBnczQxTr9IRn5kotcZCJqzBlbFeNxet0O2ZB1HookjngJ0h4Rs1F0ZC3ldt1916oZCi2S1qmk75JCela5W676wk3HxzAOKoO3upU40Sp6YGSOx8SmhRCfP7tbZC17A6zr1ZAvHFI0Co9JZAZBTUNOmDDme1g3sFNssnoWZBXy2UUNMNmjYl39HWAQZDZD") {
+    if (req.query['hub.verify_token'] === "<access_token>") {
         res.send(req.query['hub.challenge']);
     }
     res.send('Error, wrong validation token');
@@ -30,7 +30,6 @@ router.post('/webhook', function(req, res, next) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
             text = event.message.text;
-            console.log("here");
             findRespType(sender, text);
         }
     }
@@ -45,7 +44,7 @@ function findRespType(sender, text) {
         };
         sendTextMessage(sender, _messageData);
     } else {
-        var weatherSourceUrl = "https://api.forecast.io/forecast/8e154310f7fbb2b321f7907b80fa9e83/41.931907,12.456304?lang=it&units=si";
+        var weatherSourceUrl = "https://api.forecast.io/forecast/<forecast_token>/41.931907,12.456304?lang=it&units=si";
         request(weatherSourceUrl, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var _body = JSON.parse(body).daily.data;
@@ -56,15 +55,15 @@ function findRespType(sender, text) {
                         "subtitle": _body[i].icon,
                         "buttons": [{
                             "type": "postback",
-                            "title": "Massima temperatura" + _body[i].temperatureMax,
+                            "title": "Max°: " + _body[i].temperatureMax,
                             "payload": "Can not be empty"
                         }, {
                             "type": "postback",
-                            "title": "Minima temperatura" + _body[i].apparentTemperatureMin,
+                            "title": "Min° : " + _body[i].apparentTemperatureMin,
                             "payload": "Can not be empty",
                         }, {
                             "type": "postback",
-                            "title": "Umidità" + _body[i].humidity,
+                            "title": "Umidità: " + _body[i].humidity,
                             "payload": "Can not be empty",
                         }]
                     });
